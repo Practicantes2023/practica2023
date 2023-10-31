@@ -70,7 +70,7 @@ function selectIdMotivos(con, id, callback) {
 
 function selectEstadoMotivos(con, estado, callback) {
     const Query =
-    "select * from motivos_inconvenientes where estado = ? ;"
+        "select * from motivos_inconvenientes where estado = ? ;"
     con.query(Query, estado, (err, result) => {
         if (err) {
             console.error("Error al cargar datos", err);
@@ -140,11 +140,32 @@ function updateinconvenientes_certificados(con, estado, fecha_modificacion, id, 
     );
 }
 
+// operacion UPDATE 
+
+function updateinconvenientes_certificados2(con, nombre_asegurado, fecha_modificacion, numero_certificado, observaciones, id_motivo_inconveniente, id, identidad, callback) {
+    const updateQuery =
+        "update inconvenientes_certificados set nombre_asegurado = ?, fecha_modificacion=?, numero_certificado = ?, observaciones = ?, id_motivo_inconveniente = ?, identidad = ? where id = ?";
+
+    con.query(
+        updateQuery,
+        [nombre_asegurado, numero_certificado, observaciones, id_motivo_inconveniente, fecha_modificacion, id, identidad],
+        (err, result) => {
+            if (err) {
+                console.error("Error al actualizar usuario:", err);
+                callback(err, null);
+            } else {
+                console.log("Usuario actualizado con éxito.");
+                callback(null, result);
+            }
+        }
+    );
+}
+
 
 
 module.exports = {
     selectinconvenientes_certificados, selectmotivos_inconvenientes,
-    insertinconvenientes_certificados, updateinconvenientes_certificados, 
-    selectidinconvenientes_certificados,selectEstadoInconvenientes,
-    selectIdMotivos,selectEstadoMotivos
+    insertinconvenientes_certificados, updateinconvenientes_certificados,
+    selectidinconvenientes_certificados, selectEstadoInconvenientes,
+    selectIdMotivos, selectEstadoMotivos, updateinconvenientes_certificados2
 }

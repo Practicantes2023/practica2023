@@ -16,11 +16,11 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     next();
-  });
+});
 
 const {
     selectinconvenientes_certificados, selectmotivos_inconvenientes, insertinconvenientes_certificados,
-    updateinconvenientes_certificados, selectidinconvenientes_certificados,selectEstadoInconvenientes, selectEstadoMotivos, selectIdMotivos
+    updateinconvenientes_certificados, selectidinconvenientes_certificados, selectEstadoInconvenientes, selectEstadoMotivos, selectIdMotivos, updateinconvenientes_certificados2
 } = require("./operaciones.js");
 
 
@@ -68,13 +68,13 @@ con.connect((error) => {
 
 app.get("/inconvenientes_certificados", (req, res) => {
     selectinconvenientes_certificados(con, (err, result) => {
-      if (err) {
-        res.status(500).json({ error: "Error" });
-      } else {
-        res.status(201).json(result); // Enviar result directamente
-      }
+        if (err) {
+            res.status(500).json({ error: "Error" });
+        } else {
+            res.status(201).json(result); // Enviar result directamente
+        }
     });
-  });
+});
 
 
 
@@ -194,13 +194,13 @@ app.get("/motivos_inconvs/:estado", (req, res) => {
 
 app.get("/motivos_inconvenientes", (req, res) => {
     selectmotivos_inconvenientes(con, (err, result) => {
-      if (err) {
-        res.status(500).json({ error: "Error" });
-      } else {
-        res.status(201).json(result); // Enviar result directamente
-      }
+        if (err) {
+            res.status(500).json({ error: "Error" });
+        } else {
+            res.status(201).json(result); // Enviar result directamente
+        }
     });
-  });
+});
 
 // RUTA INSERT inconvenientes_certificados
 
@@ -244,3 +244,25 @@ app.put('/inconvenientes_certificados/:id', (req, res) => {
         }
     });
 });
+
+app.put('/inconvenientes_certificados2/:id', (req, res) => {
+
+    const nombre_asegurado = req.body.nombre_asegurado;
+    const numero_certificado = req.body.numero_certificado;
+    const observaciones = req.body.observaciones;
+    const id_motivo_inconveniente = req.body.id_motivo_inconveniente;
+    const identidad = req.body.identidad;
+    const id = req.params.id;
+    const fecha_modificacion = req.params.fecha_modificacion;
+
+    updateinconvenientes_certificados2(con, nombre_asegurado, numero_certificado, observaciones, id_motivo_inconveniente, 
+    fecha_modificacion, id, identidad, (err, result) => {
+        if (err) {
+            res.status(500).json({ error: "Error al actualizar datos" });
+        } else {
+            res.status(200).json({ message: "Datos actualizados con éxito" });
+        }
+    });
+});
+
+
